@@ -1,6 +1,10 @@
 const fs = require('fs');
 const { resolve, basename } = require('path');
 
+const config = {
+    entry: './FE-foundation'
+}
+
 // 判断制定路径是否是文件
 function isFile(dir) {
     return fs.statSync(dir).isFile();
@@ -32,12 +36,12 @@ function setChildInDeep(arr, child, deep, base = 1) {
 
 function parseMDMap(path) {
     const content = fs.readFileSync(path, 'utf-8');
-    const baseLevel = first(first(content).split(/\s/)).length;
+    let baseLevel;
 
     const mdTree = content.match(/^(#+)\s(.*)/gm).reduce((temp, tar) => {
         const [ level, ...titleChip ] = tar.split(/\s/);
         const title = titleChip.join(' ');
-
+        !baseLevel && (baseLevel = level.length);
         return setChildInDeep(temp, { title }, level.length, baseLevel);
     }, []);
 
@@ -61,7 +65,7 @@ function getDirTree(dir) {
     };
 }
 
-const tree = getDirTree('./md');
+const tree = getDirTree(config.entry);
 
 console.log(JSON.stringify(tree, null, 2));
 
@@ -93,13 +97,13 @@ function createNode(title, deep, childs) {
     // childs && childs.length && childs.forEach(child => container.appendChild(child));
 
     const html = `
-        <div>
+        <div style="margin-left: 50px;">
             <h${deep}>${title}</h${deep}>
             ${childs && childs.length ? childs.reduce((temp, child) => temp + child) : ''}
         </div>
     `;
 
-    return html.replace(/[\s\n]/g, '');
+    return html;
 }
 
 function compiler(obj, deep = 1) {
@@ -114,7 +118,7 @@ function compiler(obj, deep = 1) {
 
 const resLabel = compiler(tree);
 
-console.log(resLabel);
+// console.log(resLabel);
 
 const htmlContent = fs.readFileSync(resolve(__dirname, './index.html'), 'utf-8');
 const res =  htmlContent.replace('{{tree}}', resLabel);
