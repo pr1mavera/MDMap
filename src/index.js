@@ -16,13 +16,42 @@ function readDir(dir) {
     })
 }
 
+const first = arr => arr[0] || null;
+
+const last = arr => arr.length ? arr[arr.length - 1] : null;
+
+function setChildInDeep(arr, child, deep, base = 1) {
+    if (deep == base) {
+        return [ ...arr, child ];
+    }
+    const currentObj = last(arr);
+    currentObj.children = setChildInDeep(currentObj.children || (currentObj.children = []), child, deep - 1, base);
+
+    return arr;
+}
+
+function parseMDMap(path) {
+    const content = fs.readFileSync(path, 'utf-8');
+    const baseLevel = first(first(content).split(/\s/)).length;
+
+    const mdTree = content.match(/^(#+)\s(.*)/gm).reduce((temp, tar) => {
+        const [ level, ...titleChip ] = tar.split(/\s/);
+        const title = titleChip.join(' ');
+
+        return setChildInDeep(temp, { title }, level.length, baseLevel);
+    }, []);
+
+    return mdTree;
+}
+
 function getDirTree(dir) {
     console.log('当前文件夹: ', dir);
     const _path = resolve(__dirname, dir);
     const _name = basename(_path);
     if (isFile(_path)) {
         return {
-            title: _name
+            title: _name.replace('.md', ''),
+            children: parseMDMap(_path)
         };
     }
     const files = readDir(_path);
@@ -83,6 +112,15 @@ function compiler(obj, deep = 1) {
     return createNode(title, deep, childs);
 }
 
-const res = compiler(tree);
+const resLabel = compiler(tree);
 
-console.log(res)
+console.log(resLabel);
+
+const htmlContent = fs.readFileSync(resolve(__dirname, './index.html'), 'utf-8');
+const res =  htmlContent.replace('{{tree}}', resLabel);
+
+const distPath = resolve(__dirname, '../dist');
+if (!fs.existsSync(distPath)) {
+    fs.mkdirSync(distPath, {recursive: true});
+}
+fs.writeFileSync(distPath + '/index.html', res);
