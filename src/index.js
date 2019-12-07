@@ -1,5 +1,5 @@
 const { isFile, readDir, first, last, compose } = require('./utils');
-const { MDFileTransformer } = require('./MDFileTransformer');
+const { MDFileTransformer } = require('./transformer');
 const { getDirTree } = require('./dirTree');
 const { compiler } = require('./compiler');
 

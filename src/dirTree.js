@@ -1,6 +1,6 @@
 const { resolve, basename } = require('path');
 const { isFile, readDir } = require('./utils');
-const { MDFileTransformer } = require('./MDFileTransformer');
+const { MDFileTransformer } = require('./transformer');
 
 function getDirTree(dir, conf = {}) {
     console.log('当前文件夹: ', dir);
