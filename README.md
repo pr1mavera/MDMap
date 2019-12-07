@@ -12,9 +12,9 @@ MarkMap
 + 编译流程
     + 阶段一：获取完整 tree
         1. 根据 配置文件 拿到 入口md文件目录 、 单个md目录深度 、 输出文件目录
-        2. md文件目录，生成文件目录 js tree1
-        3. 单个md目录，根据深度，生成文件目录 js tree2
-        4. js tree2 拼接至 js tree1 对应目录下，得到完整 tree （Object）
+        2. md文件目录，生成文件目录 js tree1 （MDFileTransformer）
+        3. 单个md目录，根据深度，生成文件目录 js tree2 （getDirTree）
+        4. js tree2 拼接至 js tree1 对应目录下，得到完整 tree 
     + 阶段二：根据完整 tree ，生成代码
         5. 根据 tree 生成 html stream（customElement），写入 输出文件目录
 
@@ -28,3 +28,7 @@ MarkMap
     + typescript
     + rollup / gulp 编译相关
     + 深度优先遍历算法
+
+
+1. 被动编译 MDMap.config.js script
+2. 主动编译 
