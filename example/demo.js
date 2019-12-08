@@ -1,18 +1,18 @@
 const fs = require('fs');
 const { resolve } = require('path');
 const config = require('../MDMap.config') || {};
-const { 
+const {
+    pipe,
+    logger,
     getDirTree,
     compiler
 } = require('../src');
 
-const tree = getDirTree(config.input);
-
-console.log(JSON.stringify(tree, null, 2));
-
-const node = compiler(tree);
-
-// console.log(node);
+const node = pipe(
+    getDirTree,
+    logger(tree => JSON.stringify(tree, null, 2)),
+    compiler
+)(config.input);
 
 // 将生成的节点注入至模板
 const htmlContent = fs.readFileSync(resolve(__dirname, './index.html'), 'utf-8');

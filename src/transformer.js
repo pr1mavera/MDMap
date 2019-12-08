@@ -28,22 +28,22 @@ const _getTitleContent = title => {
 /**
  * 根据标题等级递归插入至子节点集合
  * 
- * @param {Array} arr 子节点集合
+ * @param {Array} childNodes 子节点集合
  * @param {Object} child 待插入的子节点
  * @param {Number} level 当前递归深度
  * @param {Number} baseLv 基础等级（默认为当前md文件第一个标题等级）
  */
-function _setChildInDeep(arr, child, level, baseLv) {
+function _setChildInDeep(childNodes, child, level, baseLv) {
     // level递减至1，说明已递归到与当前标题等级深度一致的位置
     if (level == baseLv) {
         // 可直接添加至当前children数组的末尾并返回
-        return [ ...arr, child ];
+        return [ ...childNodes, child ];
     }
     // 否则需要继续递归
-    const curNode = _.last(arr);
+    const curNode = _.last(childNodes);
     curNode.children = _setChildInDeep(curNode.children || (curNode.children = []), child, level - 1, baseLv);
 
-    return arr;
+    return childNodes;
 }
 
 /**

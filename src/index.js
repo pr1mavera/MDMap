@@ -1,4 +1,4 @@
-const { isFile, readDir, first, last, compose } = require('./utils');
+const { isFile, readDir, first, last, compose, pipe, logger } = require('./utils');
 const { MDFileTransformer } = require('./transformer');
 const { getDirTree } = require('./dirTree');
 const { compiler } = require('./compiler');
@@ -9,6 +9,8 @@ module.exports = {
     first,
     last,
     compose,
+    pipe,
+    logger,
     MDFileTransformer,
     getDirTree,
     compiler

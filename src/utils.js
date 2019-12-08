@@ -11,16 +11,27 @@ const readDir = dir => fs.readdirSync(dir, (err, files) => {
     return files;
 });
 
+const id = x => x;
+
 const first = arr => arr[0] || null;
 
 const last = arr => arr.length ? arr[arr.length - 1] : null;
 
-const compose = (...fns) => (...args) => fns.reduce((f, g) => f(g(...args)));
+const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
+
+const pipe = (...fns) => compose(...fns.reverse());
+
+const logger = (formater = id) => chain => {
+    console.log(formater(chain));
+    return chain;
+}
 
 module.exports = {
     isFile,
     readDir,
     first,
     last,
-    compose
+    compose,
+    pipe,
+    logger
 }
