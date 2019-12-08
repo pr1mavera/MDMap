@@ -1,5 +1,5 @@
 module.exports = {
     input: '../md/FE-foundation',
     output: '',
-    mdFileDepth: 2,
+    mdFileDepth: 1,
 }
