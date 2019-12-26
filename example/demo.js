@@ -4,12 +4,12 @@ const config = require('../MDMap.config') || {};
 const {
     pipe,
     logger,
-    getDirTree,
+    getMDConstruct,
     compiler
 } = require('../src');
 
 const node = pipe(
-    getDirTree,
+    getMDConstruct,
     logger(tree => JSON.stringify(tree, null, 2)),
     compiler
 )(config.input);
@@ -18,7 +18,8 @@ const node = pipe(
 const htmlContent = fs.readFileSync(resolve(__dirname, './index.html'), 'utf-8');
 const res =  htmlContent.replace('{{tree}}', node);
 
-const distPath = resolve(__dirname, '../dist');
+const distPath = resolve(__dirname, '../../blog/', 'dist/assets');
+console.log('🤪🤪🤪 你把我的节点生成到哪儿了？ 🤪🤪🤪', distPath);
 if (!fs.existsSync(distPath)) {
     fs.mkdirSync(distPath, {recursive: true});
 }

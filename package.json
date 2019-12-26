@@ -1,16 +1,26 @@
 {
-  "name": "markMap",
+  "name": "md-map-plugin",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/main.js",
   "scripts": {
     "demo": "node ./example/demo.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "markdown",
+    "json"
+  ],
+  "author": "pr1mavera",
   "license": "ISC",
   "devDependencies": {
     "glob": "^7.1.6"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "dependencies": {
+    "md5": "^2.2.1"
   }
 }
